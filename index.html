@@ -81,13 +81,15 @@ header{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
 .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;letter-spacing:.5px;
   color:var(--gold);background:rgba(233,200,132,.08);border:1px solid rgba(233,200,132,.22);
   padding:7px 15px;border-radius:999px;margin-bottom:26px}
-.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);flex:0 0 auto}
+.eyebrow .sep{opacity:.55}
+.eyebrow .handle{direction:ltr;unicode-bidi:isolate;font-weight:800}
 .hero h1{font-size:clamp(40px,7.5vw,86px);font-weight:900;line-height:1.02;letter-spacing:-1px;margin-bottom:18px}
 .hero h1 .grad{background:linear-gradient(120deg,var(--gold2),var(--gold) 40%,#fff 70%,var(--glow));
   -webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p.sub{font-size:clamp(17px,2.4vw,22px);color:var(--muted);max-width:640px;margin:0 auto 14px;font-weight:500}
 .hero p.tags{font-size:15px;color:var(--gold);font-weight:600;margin-bottom:34px;letter-spacing:.3px}
-.hero .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 
 /* ===== stats ===== */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:56px 0 10px}
@@ -154,6 +156,11 @@ header{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
   background:linear-gradient(135deg,rgba(233,200,132,.14),rgba(138,108,255,.14));border:1px solid var(--line)}
 .cta-banner h2{font-size:clamp(26px,4.5vw,42px);font-weight:900;margin-bottom:14px;letter-spacing:-.5px}
 .cta-banner p{color:var(--muted);font-size:18px;margin-bottom:28px;max-width:520px;margin-inline:auto}
+@media(max-width:520px){
+  .cta-banner .cta{flex-direction:column;align-items:stretch;gap:12px}
+  .cta-banner .cta .btn{width:100%;justify-content:center}
+  .eyebrow{font-size:12.5px;padding:7px 13px;flex-wrap:wrap;justify-content:center;max-width:92vw}
+}
 
 /* ===== footer ===== */
 footer{border-top:1px solid var(--line);padding:38px 0;margin-top:70px}
@@ -209,7 +216,7 @@ footer{border-top:1px solid var(--line);padding:38px 0;margin-top:70px}
 <main>
 <section class="hero wrap">
   <div class="hero-avatar"><img src="assets/avatar.jpg" alt="שחר"><span class="live"></span></div>
-  <div class="eyebrow"><span class="dot"></span> מפיק סרטוני AI · @shahar_mind</div>
+  <div class="eyebrow"><span class="dot"></span><span>מפיק סרטוני AI</span><span class="sep">·</span><bdi class="handle">@shahar_mind</bdi></div>
   <h1>סרטונים ש<span class="grad">אי אפשר</span><br>להפסיק לצפות בהם</h1>
   <p class="sub">יוצר סרטוני AI ויראליים שמגיעים למאות אלפי צפיות - משלב בין רעיון חד, סטוריטלינג וטכנולוגיה מתקדמת.</p>
   <p class="tags">לאירועים · לעסקים · למותגים · לכל רעיון</p>
