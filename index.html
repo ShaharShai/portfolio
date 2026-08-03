@@ -329,9 +329,17 @@ REELS.forEach((r,i)=>{
     <div class="cat">${r.cat}</div>
     <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
     <div class="meta"><h3>${r.title}</h3><span>${r.sub}</span></div>`;
-  a.addEventListener('click',()=>openLb(r));
+  a.addEventListener('click',()=>handleOpen(r));
   grid.appendChild(a);
 });
+
+// Instagram reels don't play inline inside an iframe on mobile browsers,
+// so on touch/small screens we open the reel directly in Instagram (plays in the app).
+function isMobile(){return window.matchMedia('(pointer:coarse)').matches || window.innerWidth<=720;}
+function handleOpen(r){
+  if(isMobile()){ window.open(`https://www.instagram.com/reel/${r.id}/`,'_blank','noopener'); return; }
+  openLb(r);
+}
 
 // lightbox
 const lb=document.getElementById('lb'), lbFrame=document.getElementById('lbFrame'),
