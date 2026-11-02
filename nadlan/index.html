@@ -46,8 +46,9 @@ button{font:inherit;color:inherit;background:none;border:0}
 header{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
   background:rgba(8,8,10,.8);border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
-.brand{font-family:var(--serif);font-weight:700;font-size:21px}
-.brand small{font-family:'Heebo',sans-serif;color:var(--gold);font-weight:500;font-size:13.5px;margin-inline-start:8px}
+.brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:700;font-size:21px}
+.brand img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid var(--gold)}
+.brand small{font-family:'Heebo',sans-serif;color:var(--gold);font-weight:500;font-size:13.5px}
 .nav .links{display:flex;gap:26px}
 .nav .links a{color:var(--muted);font-weight:500;font-size:15px;transition:color .2s}
 .nav .links a:hover{color:var(--txt)}
@@ -240,7 +241,7 @@ footer{border-top:1px solid var(--line);padding:26px 0;margin-top:60px;color:var
 
 <header>
   <div class="wrap nav">
-    <a class="brand" href="#top">שחר מיינד<small>מהדמיה לחיים</small></a>
+    <a class="brand" href="#top"><img src="../assets/avatar.jpg" alt="">שחר מיינד<small>מהדמיה לחיים</small></a>
     <nav class="links">
       <a href="#work">עבודות</a>
       <a href="#how">איך זה עובד</a>
@@ -265,7 +266,7 @@ footer{border-top:1px solid var(--line);padding:26px 0;margin-top:60px;color:var
       <a class="btn btn-gold" data-wa="היי שחר, יש לי פרויקט לקראת השקה ואשמח לדבר על סרטון" href="#contact">יש לי פרויקט לקראת השקה</a>
       <a class="btn btn-ghost" href="#work">צפו בעבודות</a>
     </div>
-    <div class="src">בוידאו: מהשטח הריק לפרויקט גמור, מתוך סרטון ל-<bdi>88 Residences</bdi></div>
+    <div class="src" id="heroSrc">בוידאו: מהשטח הריק לפרויקט גמור, מתוך סרטון ל-<bdi>88 Residences</bdi></div>
   </div>
 </section>
 
@@ -543,6 +544,20 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 // floating contact button appears once the hero buttons are off screen
 const sticky=document.getElementById('stickyWa');
 new IntersectionObserver(([e])=>sticky.classList.toggle('on',!e.isIntersecting)).observe(document.querySelector('.hero'));
+
+// hero test: ?hero=life or ?hero=88, the default stays as is until one is chosen
+const heroKey=new URLSearchParams(location.search).get('hero');
+const narrow=matchMedia('(max-width:720px)').matches;
+const HERO={
+  life:{v:narrow?'assets/hero-life-tall.mp4':'assets/hero-life-wide.mp4',p:narrow?'assets/hero-life-tall.jpg':'assets/hero-life-wide.jpg',t:'בוידאו: מתוך סרטון הדוגמה <bdi>Alma Residences</bdi>'},
+  88:{v:'assets/hero-88.mp4',p:'assets/hero-88.jpg',t:'בוידאו: מהשטח הריק לפרויקט גמור, <bdi>88 Residences</bdi>'}
+};
+if(HERO[heroKey]){
+  const h=HERO[heroKey], v=document.getElementById('heroVideo');
+  v.poster=h.p; document.querySelector('.hero-still').src=h.p;
+  v.querySelector('source').src=h.v; v.load(); v.play().catch(()=>{});
+  document.getElementById('heroSrc').innerHTML=h.t;
+}
 
 // keep the hero still for people who prefer no motion
 if(matchMedia('(prefers-reduced-motion: reduce)').matches){
