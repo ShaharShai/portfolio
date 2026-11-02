@@ -64,10 +64,9 @@ header{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
 
 /* ===== hero ===== */
 .hero{position:relative;min-height:min(86vh,760px);display:flex;align-items:flex-end;overflow:hidden;isolation:isolate}
-.hero video,.hero .hero-still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.hero video,.hero-still img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(to top,var(--bg) 2%,rgba(8,8,10,.72) 34%,rgba(8,8,10,.12) 70%,rgba(8,8,10,.28) 100%)}
-.hero.bright::after{background:linear-gradient(to top,var(--bg) 2%,rgba(8,8,10,.84) 46%,rgba(8,8,10,.42) 78%,rgba(8,8,10,.34) 100%)}
+  background:linear-gradient(to top,var(--bg) 2%,rgba(8,8,10,.84) 46%,rgba(8,8,10,.42) 78%,rgba(8,8,10,.34) 100%)}
 .hero .wrap{width:100%;padding-top:150px;padding-bottom:44px}
 .kicker{color:var(--gold);font-weight:700;font-size:15px;letter-spacing:.3px;margin-bottom:12px}
 .hero h1{font-family:var(--serif);font-size:clamp(36px,6vw,68px);font-weight:900;line-height:1.1;max-width:15em;margin-bottom:16px;
@@ -255,10 +254,11 @@ footer{border-top:1px solid var(--line);padding:26px 0;margin-top:60px;color:var
 
 <main id="top">
 <section class="hero">
-  <img class="hero-still" src="assets/hero.jpg" alt="">
-  <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero.jpg" aria-hidden="true">
-    <source src="assets/hero.mp4" type="video/mp4">
-  </video>
+  <picture class="hero-still">
+    <source media="(max-width:720px)" srcset="assets/hero-life-tall.jpg">
+    <img src="assets/hero-life-wide.jpg" alt="">
+  </picture>
+  <video id="heroVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
   <div class="wrap">
     <div class="kicker">סרטוני AI ליזמי נדל"ן ולמשרדי שיווק פרויקטים</div>
     <h1>סרטון השקה שגורם לקונה להרגיש שהוא כבר גר שם</h1>
@@ -267,7 +267,7 @@ footer{border-top:1px solid var(--line);padding:26px 0;margin-top:60px;color:var
       <a class="btn btn-gold" data-wa="היי שחר, יש לי פרויקט לקראת השקה ואשמח לדבר על סרטון" href="#contact">יש לי פרויקט לקראת השקה</a>
       <a class="btn btn-ghost" href="#work">צפו בעבודות</a>
     </div>
-    <div class="src" id="heroSrc">בוידאו: מהשטח הריק לפרויקט גמור, מתוך סרטון ל-<bdi>88 Residences</bdi></div>
+    <div class="src">בוידאו: מתוך סרטון הדוגמה <bdi>Alma Residences</bdi></div>
   </div>
 </section>
 
@@ -546,24 +546,14 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 const sticky=document.getElementById('stickyWa');
 new IntersectionObserver(([e])=>sticky.classList.toggle('on',!e.isIntersecting)).observe(document.querySelector('.hero'));
 
-// hero test: ?hero=life or ?hero=88, the default stays as is until one is chosen
-const heroKey=new URLSearchParams(location.search).get('hero');
-const narrow=matchMedia('(max-width:720px)').matches;
-const HERO={
-  life:{v:narrow?'assets/hero-life-tall.mp4':'assets/hero-life-wide.mp4',p:narrow?'assets/hero-life-tall.jpg':'assets/hero-life-wide.jpg',t:'בוידאו: מתוך סרטון הדוגמה <bdi>Alma Residences</bdi>'},
-  88:{v:'assets/hero-88.mp4',p:'assets/hero-88.jpg',t:'בוידאו: מהשטח הריק לפרויקט גמור, <bdi>88 Residences</bdi>'}
-};
-if(HERO[heroKey]){
-  const h=HERO[heroKey], v=document.getElementById('heroVideo');
-  v.poster=h.p; document.querySelector('.hero-still').src=h.p;
-  v.querySelector('source').src=h.v; v.load(); v.play().catch(()=>{});
-  document.getElementById('heroSrc').innerHTML=h.t;
-  if(heroKey==='life') document.querySelector('.hero').classList.add('bright');
-}
+// hero loop: vertical on phones, three panels on wider screens
+const heroVideo=document.getElementById('heroVideo'), heroKind=matchMedia('(max-width:720px)').matches?'tall':'wide';
+heroVideo.poster=`assets/hero-life-${heroKind}.jpg`;
+heroVideo.src=`assets/hero-life-${heroKind}.mp4`;
 
 // keep the hero still for people who prefer no motion
 if(matchMedia('(prefers-reduced-motion: reduce)').matches){
-  const v=document.getElementById('heroVideo'); v.pause(); v.remove();
+  heroVideo.pause(); heroVideo.remove();
 }
 
 document.getElementById('yr').textContent=new Date().getFullYear();
