@@ -67,6 +67,7 @@ header{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
 .hero video,.hero .hero-still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;
   background:linear-gradient(to top,var(--bg) 2%,rgba(8,8,10,.72) 34%,rgba(8,8,10,.12) 70%,rgba(8,8,10,.28) 100%)}
+.hero.bright::after{background:linear-gradient(to top,var(--bg) 2%,rgba(8,8,10,.84) 46%,rgba(8,8,10,.42) 78%,rgba(8,8,10,.34) 100%)}
 .hero .wrap{width:100%;padding-top:150px;padding-bottom:44px}
 .kicker{color:var(--gold);font-weight:700;font-size:15px;letter-spacing:.3px;margin-bottom:12px}
 .hero h1{font-family:var(--serif);font-size:clamp(36px,6vw,68px);font-weight:900;line-height:1.1;max-width:15em;margin-bottom:16px;
@@ -557,6 +558,7 @@ if(HERO[heroKey]){
   v.poster=h.p; document.querySelector('.hero-still').src=h.p;
   v.querySelector('source').src=h.v; v.load(); v.play().catch(()=>{});
   document.getElementById('heroSrc').innerHTML=h.t;
+  if(heroKey==='life') document.querySelector('.hero').classList.add('bright');
 }
 
 // keep the hero still for people who prefer no motion
